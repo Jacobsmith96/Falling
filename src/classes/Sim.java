@@ -55,7 +55,8 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
      * Arraylist that tracks all the circles
      */
     ArrayList<Circle> circles = new ArrayList<Circle>();
-
+    public final int YMIN = 40;
+    public final int YMAX = 795;
     /**
      * Default constructor for the Sim class
      */
@@ -139,7 +140,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e) {
 	if (circles.size() < 2) {
 	    int randX = (int) (Math.random() * 500);
-	    int randY = 25;
+	    int randY = YMIN;
 	    int randRad = (int) (Math.random() * 100);
 	    int randvX = (int) (Math.random() * 5)+1;
 	    int randvY = (int) (Math.random() * 5)+1;
@@ -152,10 +153,10 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	    if(a.getX()+2*a.getRadius()>800){
 		a.setVX(a.getVX()*-1);
 	    }
-	    if(a.getY()<0){
+	    if(a.getY()<YMIN){
 		a.setVY(a.getVY()*-1);
 	    }
-	    if(a.getY()+a.getRadius()*2>800){
+	    if(a.getY()+a.getRadius()*2>YMAX){
 		a.setVY(a.getVY()*-1);
 	    }
 	    a.setX(a.getX() + a.getVX());
