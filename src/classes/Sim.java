@@ -77,6 +77,13 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     {
 	g.drawImage(myImage, 0, 0, getWidth(), getHeight(), null);
     }
+    
+    public void create(){ //Sets up the JFrame and calls run() to start the program
+	setSize(800,800);
+	repaint();
+	show();
+	start();
+}
     @Override
     public void keyPressed(KeyEvent arg0) {
 	// TODO Auto-generated method stub

@@ -9,6 +9,6 @@ public class Driver{
 	@SuppressWarnings("javadoc")
 	public static void main(String[] args){
 		Sim sim = new Sim();
-		sim.start();
+		sim.create();
 	}
 }
