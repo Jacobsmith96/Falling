@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -17,8 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 /**
- * @author Jacob_000
- * The Class handling the behavior of the simulator
+ * @author Jacob_000 The Class handling the behavior of the simulator
  */
 public class Sim extends JFrame implements ActionListener, KeyListener {
     /**
@@ -32,7 +34,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     /**
      * States whether the game is still running or not
      */
-    boolean running; 
+    boolean running;
     /**
      * Background panel
      */
@@ -40,7 +42,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     /**
      * Initializes the timer
      */
-    Timer timer; 
+    Timer timer;
     /**
      * Tick of the timer
      */
@@ -48,64 +50,119 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     /**
      * ArrayList that tracks all currently pressed keys
      */
-    ArrayList keys = new ArrayList(); 
+    ArrayList keys = new ArrayList();
+    /**
+     * Arraylist that tracks all the circles
+     */
+    ArrayList<Circle> circles = new ArrayList<Circle>();
 
     /**
      * Default constructor for the Sim class
      */
     public Sim() {
-	myImage =  new BufferedImage(800,800,BufferedImage.TYPE_INT_RGB);//Creates image for double buffering
-	myBuffer = myImage.createGraphics();//Gets the graphics from the new image
-	running = false; //Sets the game to not running
-	timer = new Timer(20, this); //Creates a new timer
-	addKeyListener(this);//Sets up the key listeners
-	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//Program terminates on exit
+	myImage = new BufferedImage(800, 800, BufferedImage.TYPE_INT_RGB);
+	myBuffer = myImage.createGraphics();
+	running = false; // Sets the game to not running
+	timer = new Timer(20, this); // Creates a new timer
+	addKeyListener(this);// Sets up the key listeners
+	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     /**
      * Called when the program should start running
      */
-    public void start(){
+    public void start() {
 	running = true;
 	timer.start();
     }
+
     /**
-     * Paints every tick of the timer and draws the double buffering image all at once to prevents 
-     * flashing of the graphics
+     * Paints every tick of the timer and draws the double buffering image all
+     * at once to prevents flashing of the graphics
      */
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
 	g.drawImage(myImage, 0, 0, getWidth(), getHeight(), null);
     }
-    
-    public void create(){ //Sets up the JFrame and calls run() to start the program
-	setSize(800,800);
+
+    /**
+     * Creates the window and starts the simulator
+     */
+    public void create() { // Sets up the JFrame and calls run() to start the
+			   // program
+	setSize(800, 800);
 	repaint();
 	show();
 	start();
-}
+    }
+
+    public void paintObjects() {
+	if (running) {
+	    myBuffer.setColor(Color.BLACK);
+	    myBuffer.fillRect(0, 0, 800, 800);
+	    for (Circle i : circles) {
+		myBuffer.setColor(Color.YELLOW);
+		i.paintCircle(myBuffer);
+	    }
+	} else {
+	    myBuffer.setColor(Color.YELLOW);
+	    for (Circle i : circles) {
+		i.paintCircle(myBuffer);
+	    }
+	}
+    }
+
+    public void reset() { // Restarts the program if the player chooses to do so
+	timer.start();
+	running = true;
+	repaint();
+    }
+
     @Override
-    public void keyPressed(KeyEvent arg0) {
+    public void keyPressed(KeyEvent e) {
 	// TODO Auto-generated method stub
 
     }
 
     @Override
-    public void keyReleased(KeyEvent arg0) {
+    public void keyReleased(KeyEvent e) {
 	// TODO Auto-generated method stub
 
     }
 
     @Override
-    public void keyTyped(KeyEvent arg0) {
+    public void keyTyped(KeyEvent e) {
 	// TODO Auto-generated method stub
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-	// TODO Auto-generated method stub
-
+    public void actionPerformed(ActionEvent e) {
+	if (circles.size() < 2) {
+	    int randX = (int) (Math.random() * 500);
+	    int randY = 25;
+	    int randRad = (int) (Math.random() * 100);
+	    int randvX = (int) (Math.random() * 5)+1;
+	    int randvY = (int) (Math.random() * 5)+1;
+	    circles.add(new Circle(randX, randY, randRad, randvX, randvY));
+	}
+	for (Circle a : circles) {
+	    if(a.getX()<0){
+		a.setVX(a.getVX()*-1);
+	    }
+	    if(a.getX()+2*a.getRadius()>800){
+		a.setVX(a.getVX()*-1);
+	    }
+	    if(a.getY()<0){
+		a.setVY(a.getVY()*-1);
+	    }
+	    if(a.getY()+a.getRadius()*2>800){
+		a.setVY(a.getVY()*-1);
+	    }
+	    a.setX(a.getX() + a.getVX());
+	    a.setY(a.getY() + a.getVY());
+	}
+	paintObjects();
+	repaint();
     }
 
 }
