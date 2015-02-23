@@ -139,49 +139,20 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-	if (circles.size() < 2) {
-	    int randX = (int) (Math.random() * 500);
+	if (circles.size() < 100) {
+	    int randX =  (int) (Math.random() * 500);
 	    int randY = (int) (Math.random() * 200);
-	    int randRad = (int) (Math.random() * 100);
+	    int randRad = (int) (Math.random() *100);
 	    int randvX = (int) (Math.random() * 5) + 1;
-	    int randvY = (int) (Math.random() * 5) + 1;
+	    int randvY =  (int) (Math.random() * 5) + 1;
 	    circles.add(new Circle(randX, randY, randRad, randvX, randvY));
 	}
 
 	for (Circle a : circles) {
 	    for (Circle b : circles) {
 		if (a != b && a.collision(b)) {
-		    int midpointx = (a.getX() + b.getX()) / 2;
-		    int midpointy = (a.getY() + b.getY()) / 2;
-		    double d = Math.sqrt(Math.pow((a.getX() + a.getRadius())
-			    - (b.getX() + b.getRadius()), 2)
-			    + Math.pow((a.getY() + a.getRadius())
-				    - (b.getY() + b.getRadius()), 2));
-		    a.setX((int) (midpointx + a.getRadius()
-			    * (a.getX() - b.getX() / d)));
-		    a.setY((int) (midpointy + a.getRadius()
-			    * (a.getY() - b.getY() / d)));
-		    b.setX((int) (midpointx + b.getRadius()
-			    * (b.getX() - a.getX() / d)));
-		    b.setY((int) (midpointy + b.getRadius()
-			    * (b.getY() - a.getY() / d)));
-
-		    double nx = ((b.getX() + b.getRadius()) - (a.getX() + a
-			    .getRadius())) / d;
-		    double ny = ((b.getY() + b.getRadius()) - (a.getY() + a
-			    .getRadius())) / d;
-		    double p = 2
-			    * (a.getVX() * nx + a.getVY() * ny - b.getVX() * nx - b
-				    .getVY() * ny)
-			    / (a.getRadius() + b.getRadius());
-		    a.setVX((int) (a.vX - p * a.getRadius() * nx));
-		    a.setVY((int) (a.vY - p * a.getRadius() * ny));
-		    b.setVX((int) (b.vX + p * b.getRadius() * nx));
-		    b.setVY((int) (b.vY + p * b.getRadius() * ny));
-		    System.out.println("true");
-
-		} 
+		    
+		}
 	    }
 	    a.update();
 	}
