@@ -143,6 +143,27 @@ public class Circle {
 	return vY;
     }
 
+    public void update() {
+	if (xVal + vX <= 0) {
+	    vX = Math.abs(vX);
+	}
+	if (xVal + (r * 2) >= 800) {
+	    if (vX > 0)
+		vX = Math.abs(vX) * -1;
+	}
+	if (yVal + vY <= 0) {
+	    vY = Math.abs(vY);
+	}
+	if (yVal + (r * 2) >= 800) {
+	    if (vY > 0)
+		vY = Math.abs(vY) * -1;
+	}
+	xVal = xVal + vX;
+	yVal = yVal + vY;
+	setVY(getVY()/* +GRAVITY */);
+
+    }
+
     /**
      * @param circ1
      *            Other circle in the simulation
