@@ -171,9 +171,11 @@ public class Circle {
      */
     public boolean collision(Circle circ1) {
 
-	double a = getRadius() + circ1.getRadius();
-	double dx = ((getX() + getRadius()) - (circ1.getX() + circ1.getRadius()));
-	double dy = ((getY() + getRadius()) - (circ1.getY() + circ1.getRadius()));
-	return a * a > ((dx * dx) + (dy * dy));
+	double xDif = getX() - circ1.getX();
+	double yDif = getY() - circ1.getY();
+	double distanceSquared = xDif * xDif + yDif * yDif;
+	boolean collision = distanceSquared < (getRadius() + circ1.getRadius())
+		* (getRadius() + circ1.getRadius());
+	return collision;
     }
 }

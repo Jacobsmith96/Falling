@@ -151,11 +151,22 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 
 	for (Circle a : circles) {
 	    for (Circle b : circles) {
-		if (a.collision(b)) {
+		if (a != b && a.collision(b)) {
+		    int midpointx = (a.getX() + b.getX()) / 2;
+		    int midpointy = (a.getY() + b.getY()) / 2;
 		    double d = Math.sqrt(Math.pow((a.getX() + a.getRadius())
 			    - (b.getX() + b.getRadius()), 2)
 			    + Math.pow((a.getY() + a.getRadius())
 				    - (b.getY() + b.getRadius()), 2));
+		    a.setX((int) (midpointx + a.getRadius()
+			    * (a.getX() - b.getX() / d)));
+		    a.setY((int) (midpointy + a.getRadius()
+			    * (a.getY() - b.getY() / d)));
+		    b.setX((int) (midpointx + b.getRadius()
+			    * (b.getX() - a.getX() / d)));
+		    b.setY((int) (midpointy + b.getRadius()
+			    * (b.getY() - a.getY() / d)));
+
 		    double nx = ((b.getX() + b.getRadius()) - (a.getX() + a
 			    .getRadius())) / d;
 		    double ny = ((b.getY() + b.getRadius()) - (a.getY() + a
@@ -168,7 +179,9 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		    a.setVY((int) (a.vY - p * a.getRadius() * ny));
 		    b.setVX((int) (b.vX + p * b.getRadius() * nx));
 		    b.setVY((int) (b.vY + p * b.getRadius() * ny));
-		}
+		    System.out.println("true");
+
+		} 
 	    }
 	    a.update();
 	}
