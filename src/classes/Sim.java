@@ -55,8 +55,11 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
      * Arraylist that tracks all the circles
      */
     ArrayList<Circle> circles = new ArrayList<Circle>();
+    public final int XMIN = 5;
+    public final int XMAX = 795;
     public final int YMIN = 40;
     public final int YMAX = 795;
+    public final int GRAVITY = 1;
     /**
      * Default constructor for the Sim class
      */
@@ -140,27 +143,37 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e) {
 	if (circles.size() < 2) {
 	    int randX = (int) (Math.random() * 500);
-	    int randY = YMIN;
+	    int randY = (int)(Math.random()*200);
 	    int randRad = (int) (Math.random() * 100);
 	    int randvX = (int) (Math.random() * 5)+1;
 	    int randvY = (int) (Math.random() * 5)+1;
 	    circles.add(new Circle(randX, randY, randRad, randvX, randvY));
 	}
 	for (Circle a : circles) {
-	    if(a.getX()<0){
+	    if(a.getX()<XMIN){
+		a.setX(XMIN);
 		a.setVX(a.getVX()*-1);
 	    }
-	    if(a.getX()+2*a.getRadius()>800){
+	    if(a.getX()+2*a.getRadius()>XMAX){
+		a.setX(XMAX-(2*a.getRadius()));
 		a.setVX(a.getVX()*-1);
 	    }
 	    if(a.getY()<YMIN){
+		a.setY(YMIN);
 		a.setVY(a.getVY()*-1);
 	    }
 	    if(a.getY()+a.getRadius()*2>YMAX){
+		a.setY(YMAX-(2*a.getRadius()));
 		a.setVY(a.getVY()*-1);
 	    }
 	    a.setX(a.getX() + a.getVX());
+	    a.setVY(a.getVY()+GRAVITY);
 	    a.setY(a.getY() + a.getVY());
+	    for(Circle b : circles){
+		if(a.collision(b)){
+		    
+		}
+	    }
 	}
 	paintObjects();
 	repaint();
