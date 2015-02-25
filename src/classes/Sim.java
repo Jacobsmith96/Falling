@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.Timer;
 import javax.swing.JFrame;
@@ -68,13 +70,6 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	addKeyListener(this);// Sets up the key listeners
 	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	setUndecorated(true);
-    }
-
-    /**
-     * Called when the program should start running
-     */
-    public void start() {
-	running = true;
 	timer.start();
     }
 
@@ -94,7 +89,6 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	setSize(800, 800);
 	repaint();
 	show();
-	start();
     }
 
     public void paintObjects() {
@@ -106,10 +100,10 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		i.paintCircle(myBuffer);
 	    }
 	} else {
-	    myBuffer.setColor(Color.YELLOW);
-	    for (Circle i : circles) {
-		i.paintCircle(myBuffer);
-	    }
+	    myBuffer.setColor(Color.WHITE);
+	    myBuffer.setFont(new Font("Arial", Font.PLAIN, 20));
+	    myBuffer.drawString("Start? Y/N", 340, 400);
+
 	}
     }
 
@@ -121,37 +115,52 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-	// TODO Auto-generated method stub
+	int key = e.getKeyCode();
+	if (!keys.contains(key))
+	    keys.add(key); // Adds the newly pressed key to the keys arrayList'
+	if (keys.contains(KeyEvent.VK_Y)) {
+	    if (!running) {
+		reset();
+	    }
+	}
+	if (keys.contains(KeyEvent.VK_N)) {
+	    if (!running) {
+		System.exit(0);
+	    }
+	}
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-	// TODO Auto-generated method stub
+	int key = e.getKeyCode();
+	if (keys.size() > 0)
+	    keys.remove(keys.indexOf(key)); // Removes the released key from the
+					    // keys ArrayList
 
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-	// TODO Auto-generated method stub
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	if (circles.size() < 100) {
-	    int randX =  (int) (Math.random() * 500);
+	System.out.println(keys);
+	if (circles.size() < 2) {
+	    int randX = (int) (Math.random() * 500);
 	    int randY = (int) (Math.random() * 200);
-	    int randRad = (int) (Math.random() *100);
+	    int randRad = (int) (Math.random() * 100);
 	    int randvX = (int) (Math.random() * 5) + 1;
-	    int randvY =  (int) (Math.random() * 5) + 1;
+	    int randvY = (int) (Math.random() * 5) + 1;
 	    circles.add(new Circle(randX, randY, randRad, randvX, randvY));
 	}
 
 	for (Circle a : circles) {
 	    for (Circle b : circles) {
 		if (a != b && a.collision(b)) {
-		    
+
 		}
 	    }
 	    a.update();

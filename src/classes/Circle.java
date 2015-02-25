@@ -159,7 +159,7 @@ public class Circle {
 		vY = Math.abs(vY) * -1;
 	}
 	xVal = xVal + vX;
-	vY = vY + 1;
+	vY = vY ;
 	yVal = yVal + vY;
 
     }
