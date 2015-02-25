@@ -58,6 +58,9 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
      */
     ArrayList<Circle> circles = new ArrayList<Circle>();
     public final int GRAVITY = 1;
+    public enum state{
+	CLASSIC, SPRING
+    }
 
     /**
      * Default constructor for the Sim class
@@ -168,4 +171,5 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	paintObjects();
 	repaint();
     }
+
 }
