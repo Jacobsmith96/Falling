@@ -98,14 +98,23 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     }
 
     public void paintObjects() {
-	if (state == State.CLASSIC || state == State.SPRING) {
+	if (state == State.CLASSIC) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
 	    myBuffer.setColor(Color.YELLOW);
 	    for (Circle i : circles) {
 		i.paintCircle(myBuffer);
 	    }
-	} else {
+	} else if (state == State.SPRING) {
+	    myBuffer.setColor(Color.BLACK);
+	    myBuffer.fillRect(0, 0, 800, 800);
+	    myBuffer.setColor(Color.GREEN);
+	    for (Circle i : circles) {
+		i.paintCircle(myBuffer);
+	    }
+	} else if (state == State.WAIT) {
+	    myBuffer.setColor(Color.BLACK);
+	    myBuffer.fillRect(0, 0, 800, 800);
 	    myBuffer.setColor(Color.WHITE);
 	    myBuffer.setFont(new Font("Arial", Font.PLAIN, 20));
 	    myBuffer.drawString("Select an option", 340, 380);
@@ -146,8 +155,8 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	if (keys.contains(KeyEvent.VK_ESCAPE)) {
 	    if (state != State.WAIT) {
 		state = State.WAIT;
-		for (Circle a : circles) {
-		    circles.remove(a);
+		while (circles.size() > 0) {
+		    circles.remove(0);
 		}
 		reset();
 	    }
@@ -190,21 +199,22 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		a.update();
 	    }
 	} else if (state == State.SPRING) {
-	    for (Circle a : circles) {
-		circles.remove(a);
+
+	    if (circles.size() < 50) {
+		int x = 375;
+		int y = 10;
+		int rad = 25;
+		int vX = 3;
+		int vY = 2;
+		circles.add(new Circle(x, y, rad, vX, vY));
 	    }
-	    for (Circle a : circles) {
-		if (circles.size() < 50) {
-		    int x = 375;
-		    int y = 10;
-		    int rad = 25;
-		    int vX = 3;
-		    int vY = 2;
-		    circles.add(new Circle(x, y, rad, vX, vY));
-		}
-		a.update();
+	    for (Circle b : circles) {
+		b.setVY(b.getVY() + GRAVITY);
+		System.out.println(circles.get(0).getVX());
+		b.update();
 	    }
 	}
+
 	paintObjects();
 	repaint();
     }
