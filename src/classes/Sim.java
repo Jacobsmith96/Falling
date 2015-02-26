@@ -60,7 +60,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     public final int GRAVITY = 1;
 
     public enum State {
-	CLASSIC, SPRING, WAIT
+	CLASSIC, SPRING, TUNNEL, WAIT
     }
 
     public State state;
@@ -112,6 +112,13 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	    for (Circle i : circles) {
 		i.paintCircle(myBuffer);
 	    }
+	} else if (state == State.TUNNEL) {
+	    myBuffer.setColor(Color.BLACK);
+	    myBuffer.fillRect(0, 0, 800, 800);
+	    myBuffer.setColor(Color.RED);
+	    for (Circle i : circles) {
+		i.paintCircle(myBuffer);
+	    }
 	} else if (state == State.WAIT) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
@@ -120,7 +127,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	    myBuffer.drawString("Select an option", 340, 380);
 	    myBuffer.drawString("1. Classic", 340, 400);
 	    myBuffer.drawString("2. Spring", 340, 420);
-	    myBuffer.drawString("3.", 340, 440);
+	    myBuffer.drawString("3. Tunnel", 340, 440);
 	    myBuffer.drawString("4.", 340, 460);
 	    myBuffer.drawString("5. Exit", 340, 480);
 	}
@@ -145,6 +152,11 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	if (keys.contains(KeyEvent.VK_2)) {
 	    if (state == State.WAIT) {
 		state = State.SPRING;
+	    }
+	}
+	if(keys.contains(KeyEvent.VK_3)){
+	    if(state == State.WAIT){
+		state = State.TUNNEL;
 	    }
 	}
 	if (keys.contains(KeyEvent.VK_5)) {
@@ -212,6 +224,10 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		b.setVY(b.getVY() + GRAVITY);
 		System.out.println(circles.get(0).getVX());
 		b.update();
+	    }
+	} else if (state == State.TUNNEL){
+	    for(int x = 50; x < 100; x+=5){
+		circles.add(new Circle(400-(2*x),400-(2*x),10 + x, 0,0));
 	    }
 	}
 
