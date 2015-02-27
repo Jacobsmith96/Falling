@@ -16,6 +16,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JSlider;
 import javax.swing.Timer;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -58,6 +59,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
      */
     ArrayList<Circle> circles = new ArrayList<Circle>();
     public final int GRAVITY = 1;
+    JSlider grav;
 
     public enum State {
 	CLASSIC, SPRING, TUNNEL, WAIT
@@ -76,6 +78,8 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	addKeyListener(this);// Sets up the key listeners
 	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	setUndecorated(true);
+	JSlider grav = new JSlider(0,10,1);
+	//add(grav);
 	timer.start();
     }
 
@@ -211,7 +215,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		a.update();
 	    }
 	} else if (state == State.SPRING) {
-
+	    
 	    if (circles.size() < 50) {
 		int x = 375;
 		int y = 10;
