@@ -16,6 +16,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.Timer;
 import javax.swing.JFrame;
@@ -79,7 +80,6 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	setUndecorated(true);
 	JSlider grav = new JSlider(0,10,1);
-	//add(grav);
 	timer.start();
     }
 
@@ -168,6 +168,12 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		System.exit(0);
 	    }
 	}
+	if(keys.contains(KeyEvent.VK_G)){
+	    if(state==State.SPRING){
+		JOptionPane askGrav = new JOptionPane("Enter new gravity value");
+		
+	    }
+	}
 	if (keys.contains(KeyEvent.VK_ESCAPE)) {
 	    if (state != State.WAIT) {
 		state = State.WAIT;
@@ -215,7 +221,6 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		a.update();
 	    }
 	} else if (state == State.SPRING) {
-	    
 	    if (circles.size() < 50) {
 		int x = 375;
 		int y = 10;
@@ -223,10 +228,10 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		int vX = 3;
 		int vY = 2;
 		circles.add(new Circle(x, y, rad, vX, vY));
+		
 	    }
 	    for (Circle b : circles) {
 		b.setVY(b.getVY() + GRAVITY);
-		System.out.println(circles.get(0).getVX());
 		b.update();
 	    }
 	} else if (state == State.TUNNEL){
