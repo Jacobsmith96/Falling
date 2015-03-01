@@ -101,6 +101,9 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	show();
     }
 
+    /**
+     * Handles the painting of all the objects based upon the current state
+     */
     public void paintObjects() {
 	if (state == State.CLASSIC) {
 	    myBuffer.setColor(Color.BLACK);
