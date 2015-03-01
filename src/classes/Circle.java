@@ -156,10 +156,9 @@ public class Circle {
 	}
 	if (yVal + (r * 2) >= 800) {
 	    if (vY > 0)
-		vY = Math.abs(vY) * -1;
+		vY = (Math.abs(vY) * -1);
 	}
 	xVal = xVal + vX;
-	vY = vY ;
 	yVal = yVal + vY;
 
     }

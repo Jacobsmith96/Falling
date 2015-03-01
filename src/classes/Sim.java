@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -59,7 +60,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
      * Arraylist that tracks all the circles
      */
     ArrayList<Circle> circles = new ArrayList<Circle>();
-    public final int GRAVITY = 1;
+    public int gravity = 1;
     JSlider grav;
 
     public enum State {
@@ -173,7 +174,11 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	}
 	if(keys.contains(KeyEvent.VK_G)){
 	    if(state==State.SPRING){
-		JOptionPane askGrav = new JOptionPane("Enter new gravity value");
+		if(gravity <5){
+		    gravity++;
+		}
+		else
+		    gravity = 1;
 		
 	    }
 	}
@@ -226,7 +231,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	} else if (state == State.SPRING) {
 	    if (circles.size() < 50) {
 		int x = 375;
-		int y = 10;
+		int y = 50;
 		int rad = 25;
 		int vX = 3;
 		int vY = 2;
@@ -234,7 +239,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		
 	    }
 	    for (Circle b : circles) {
-		b.setVY(b.getVY() + GRAVITY);
+		b.setVY(b.getVY() + gravity-1);
 		b.update();
 	    }
 	} else if (state == State.TUNNEL){
