@@ -80,7 +80,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	addKeyListener(this);// Sets up the key listeners
 	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	setUndecorated(true);
-	JSlider grav = new JSlider(0,10,1);
+	JSlider grav = new JSlider(0, 10, 1);
 	timer.start();
     }
 
@@ -127,6 +127,39 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	    for (Circle i : circles) {
 		i.paintCircle(myBuffer);
 	    }
+	    myBuffer.setColor(Color.WHITE);
+	    myBuffer.drawLine(
+		    400,
+		    400,
+		    circles.get(circles.size() - 1).getX()
+			    + circles.get(circles.size() - 1).getRadius(),
+		    circles.get(circles.size() - 1).getY()
+			    + circles.get(circles.size() - 1).getRadius());
+	    myBuffer.setColor(Color.CYAN);
+	    myBuffer.drawLine(
+		    circles.get(0).getX() + circles.get(0).getRadius(),
+		    circles.get(0).getY(),
+		    circles.get(circles.size() - 1).getX()
+			    + circles.get(circles.size() - 1).getRadius(),
+		    circles.get(circles.size() - 1).getY());
+	    myBuffer.drawLine(
+		    circles.get(0).getX(),
+		    circles.get(0).getY() + circles.get(0).getRadius(),
+		    circles.get(circles.size() - 1).getX(),
+		    circles.get(circles.size() - 1).getY()
+			    + circles.get(circles.size() - 1).getRadius());
+	    myBuffer.drawLine(
+		    circles.get(0).getX() + circles.get(0).getRadius()*2,
+		    circles.get(0).getY() + circles.get(0).getRadius(),
+		    circles.get(circles.size() - 1).getX() + circles.get(circles.size()-1).getRadius()*2,
+		    circles.get(circles.size() - 1).getY()
+			    + circles.get(circles.size() - 1).getRadius());
+	    myBuffer.drawLine(
+		    circles.get(0).getX() + circles.get(0).getRadius(),
+		    circles.get(0).getY() + circles.get(0).getRadius()*2,
+		    circles.get(circles.size() - 1).getX() + circles.get(circles.size()-1).getRadius(),
+		    circles.get(circles.size() - 1).getY()
+			    + circles.get(circles.size() - 1).getRadius() * 2);
 	} else if (state == State.WAIT) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
@@ -162,8 +195,8 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		state = State.SPRING;
 	    }
 	}
-	if(keys.contains(KeyEvent.VK_3)){
-	    if(state == State.WAIT){
+	if (keys.contains(KeyEvent.VK_3)) {
+	    if (state == State.WAIT) {
 		state = State.TUNNEL;
 	    }
 	}
@@ -172,14 +205,41 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		System.exit(0);
 	    }
 	}
-	if(keys.contains(KeyEvent.VK_G)){
-	    if(state==State.SPRING){
-		if(gravity <5){
+	if (keys.contains(KeyEvent.VK_G)) {
+	    if (state == State.SPRING) {
+		if (gravity < 5) {
 		    gravity++;
-		}
-		else
+		} else
 		    gravity = 1;
-		
+
+	    }
+	}
+	if (keys.contains(KeyEvent.VK_LEFT)) {
+	    if (state == State.TUNNEL) {
+		for (Circle a : circles) {
+		    a.setX(a.getX() - (circles.indexOf(a)));
+		}
+	    }
+	}
+	if (keys.contains(KeyEvent.VK_RIGHT)) {
+	    if (state == State.TUNNEL) {
+		for (Circle a : circles) {
+		    a.setX(a.getX() + (circles.indexOf(a)));
+		}
+	    }
+	}
+	if (keys.contains(KeyEvent.VK_UP)) {
+	    if (state == State.TUNNEL) {
+		for (Circle a : circles) {
+		    a.setY(a.getY() - (circles.indexOf(a)));
+		}
+	    }
+	}
+	if (keys.contains(KeyEvent.VK_DOWN)) {
+	    if (state == State.TUNNEL) {
+		for (Circle a : circles) {
+		    a.setY(a.getY() + (circles.indexOf(a)));
+		}
 	    }
 	}
 	if (keys.contains(KeyEvent.VK_ESCAPE)) {
@@ -231,20 +291,28 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	} else if (state == State.SPRING) {
 	    if (circles.size() < 50) {
 		int x = 375;
-		int y = 50;
+		int y = 300;
 		int rad = 25;
 		int vX = 3;
 		int vY = 2;
 		circles.add(new Circle(x, y, rad, vX, vY));
-		
+
 	    }
 	    for (Circle b : circles) {
-		b.setVY(b.getVY() + gravity-1);
+		b.setVY(b.getVY() + gravity);
 		b.update();
+		if (b.reversed) {
+		    b.setVY(b.getVY() + gravity);
+		    b.reversed = false;
+
+		}
 	    }
-	} else if (state == State.TUNNEL){
-	    for(int x = 50; x < 100; x+=5){
-		circles.add(new Circle(400-(2*x),400-(2*x),10 + x, 0,0));
+	} else if (state == State.TUNNEL) {
+	    if (circles.size() < 10) {
+		for (int x = 50; x <= 100; x += 5) {
+		    circles.add(new Circle(400 - (x + 10), 400 - (x + 10),
+			    10 + x, 0, 0));
+		}
 	    }
 	}
 

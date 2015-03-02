@@ -27,7 +27,7 @@ public class Circle {
      * Y Velocity of the circle
      */
     public int vY;
-
+    public boolean reversed;
     /**
      * Default constructor for the circle
      */
@@ -37,6 +37,7 @@ public class Circle {
 	r = 10;
 	vX = 0;
 	vY = 0;
+	reversed = false;
     }
 
     /**
@@ -57,6 +58,7 @@ public class Circle {
 	r = rad;
 	vX = velX;
 	vY = velY;
+	reversed = false;
     }
 
     /**
@@ -143,6 +145,9 @@ public class Circle {
 	return vY;
     }
 
+    /**
+     * Updates the position of the circle
+     */
     public void update() {
 	if (xVal + vX <= 0) {
 	    vX = Math.abs(vX);
@@ -157,6 +162,7 @@ public class Circle {
 	if (yVal + (r * 2) >= 800) {
 	    if (vY > 0)
 		vY = (Math.abs(vY) * -1);
+	    reversed = true;
 	}
 	xVal = xVal + vX;
 	yVal = yVal + vY;
