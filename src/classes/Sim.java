@@ -149,15 +149,17 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		    circles.get(circles.size() - 1).getY()
 			    + circles.get(circles.size() - 1).getRadius());
 	    myBuffer.drawLine(
-		    circles.get(0).getX() + circles.get(0).getRadius()*2,
+		    circles.get(0).getX() + circles.get(0).getRadius() * 2,
 		    circles.get(0).getY() + circles.get(0).getRadius(),
-		    circles.get(circles.size() - 1).getX() + circles.get(circles.size()-1).getRadius()*2,
+		    circles.get(circles.size() - 1).getX()
+			    + circles.get(circles.size() - 1).getRadius() * 2,
 		    circles.get(circles.size() - 1).getY()
 			    + circles.get(circles.size() - 1).getRadius());
 	    myBuffer.drawLine(
 		    circles.get(0).getX() + circles.get(0).getRadius(),
-		    circles.get(0).getY() + circles.get(0).getRadius()*2,
-		    circles.get(circles.size() - 1).getX() + circles.get(circles.size()-1).getRadius(),
+		    circles.get(0).getY() + circles.get(0).getRadius() * 2,
+		    circles.get(circles.size() - 1).getX()
+			    + circles.get(circles.size() - 1).getRadius(),
 		    circles.get(circles.size() - 1).getY()
 			    + circles.get(circles.size() - 1).getRadius() * 2);
 	} else if (state == State.WAIT) {
@@ -207,10 +209,14 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	}
 	if (keys.contains(KeyEvent.VK_G)) {
 	    if (state == State.SPRING) {
+
 		if (gravity < 5) {
-		    gravity++;
+		    gravity = gravity + 1;
 		} else
 		    gravity = 1;
+		while (circles.size() > 0) {
+		    circles.remove(0);
+		}
 
 	    }
 	}
@@ -270,7 +276,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	System.out.println(keys);
+	System.out.println(gravity);
 	if (state == State.CLASSIC) {
 	    if (circles.size() < 2) {
 		int randX = (int) (Math.random() * 500);
@@ -293,7 +299,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		int x = 375;
 		int y = 300;
 		int rad = 25;
-		int vX = 3;
+		int vX = 10;
 		int vY = 2;
 		circles.add(new Circle(x, y, rad, vX, vY));
 
