@@ -63,7 +63,9 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     ArrayList<Circle> circles = new ArrayList<Circle>();
     public int gravity = 1;
     JSlider grav;
-
+    int col1 = 0;
+    int col2 = 0;
+    int col3 = 0;
     public enum State {
 	CLASSIC, SPRING, TUNNEL, WAIT
     }
@@ -110,7 +112,24 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	if (state == State.CLASSIC) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
-	    myBuffer.setColor(new Color(tick, tick , tick ));
+	    if(col1 == 0 && col2 == 0 && col3<255){
+		col3++;
+	    }
+	    else if (col1<255  && col2 == 0&&col3 ==255){
+		col1++;
+	    }
+	    else if(col1 == 255 && col2 <255 && col3 ==255){
+		col2 ++;
+	    }
+	    else if (col1 == 255 && col2 == 255 && col3>0){
+		col3--;
+	    }
+	    else if (col1 == 255 && col2>0 && col3==0){
+		col2--;
+	    }
+	    else
+		col1--;
+	    myBuffer.setColor(new Color(col1, col2 , col3 ));
 	    for (Circle i : circles) {
 		i.paintCircle(myBuffer);
 	    }
