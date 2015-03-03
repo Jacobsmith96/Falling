@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -109,7 +110,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	if (state == State.CLASSIC) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
-	    myBuffer.setColor(Color.YELLOW);
+	    myBuffer.setColor(new Color(tick, tick , tick ));
 	    for (Circle i : circles) {
 		i.paintCircle(myBuffer);
 	    }
@@ -276,7 +277,6 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	System.out.println(gravity);
 	if (state == State.CLASSIC) {
 	    if (circles.size() < 2) {
 		int randX = (int) (Math.random() * 500);
@@ -304,6 +304,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		circles.add(new Circle(x, y, rad, vX, vY));
 
 	    }
+
 	    for (Circle b : circles) {
 		b.setVY(b.getVY() + gravity);
 		b.update();
@@ -321,7 +322,10 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		}
 	    }
 	}
-
+	tick += 1;
+	if(tick>255){
+	    tick = 0;
+	}
 	paintObjects();
 	repaint();
     }
