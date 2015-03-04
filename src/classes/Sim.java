@@ -60,12 +60,13 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     ArrayList<Circle> circles = new ArrayList<Circle>();
     public int gravity = 1;
     JSlider grav;
-    int col1 = 0;
-    int col2 = 0;
-    int col3 = 0;
+    int col1 = 50;
+    int col2 = 50;
+    int col3 = 50;
+    int rad = 10;
 
     public enum State {
-	CLASSIC, SPRING, TUNNEL, WAIT
+	CLASSIC, SPRING, TUNNEL, EXPAND, WAIT
     }
 
     public State state;
@@ -110,9 +111,9 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	if (state == State.CLASSIC) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
-	    if (col1 == 0 && col2 == 0 && col3 < 255) {
+	    if (col1 < 255 && col2 < 255 && col3 < 255) {
 		col3++;
-	    } else if (col1 < 255 && col2 == 0 && col3 == 255) {
+	    } else if (col1 < 255 && col2 < 255 && col3 == 255) {
 		col1++;
 	    } else if (col1 == 255 && col2 < 255 && col3 == 255) {
 		col2++;
@@ -175,6 +176,15 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 			    + circles.get(circles.size() - 1).getRadius(),
 		    circles.get(circles.size() - 1).getY()
 			    + circles.get(circles.size() - 1).getRadius() * 2);
+	} else if (state == State.EXPAND) {
+	    myBuffer.setColor(Color.BLACK);
+	    myBuffer.fillRect(0, 0, 800, 800);
+	    myBuffer.setColor(Color.MAGENTA);
+
+	    for (Circle a : circles) {
+		a.paintCircle(myBuffer);
+	    }
+
 	} else if (state == State.WAIT) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
@@ -184,7 +194,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	    myBuffer.drawString("1. Classic", 340, 400);
 	    myBuffer.drawString("2. Spring", 340, 420);
 	    myBuffer.drawString("3. Tunnel", 340, 440);
-	    myBuffer.drawString("4.", 340, 460);
+	    myBuffer.drawString("4. Expand", 340, 460);
 	    myBuffer.drawString("5. Exit", 340, 480);
 	}
     }
@@ -213,6 +223,11 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	if (keys.contains(KeyEvent.VK_3)) {
 	    if (state == State.WAIT) {
 		state = State.TUNNEL;
+	    }
+	}
+	if (keys.contains(KeyEvent.VK_4)) {
+	    if (state == State.WAIT) {
+		state = State.EXPAND;
 	    }
 	}
 	if (keys.contains(KeyEvent.VK_5)) {
@@ -267,15 +282,15 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		while (circles.size() > 0) {
 		    circles.remove(0);
 		}
+		rad = 10;
 		reset();
 	    }
 	}
-	if(keys.contains(KeyEvent.VK_SPACE)){
-	    if(state != State.WAIT){
-		if(timer.isRunning()){
+	if (keys.contains(KeyEvent.VK_SPACE)) {
+	    if (state != State.WAIT) {
+		if (timer.isRunning()) {
 		    timer.stop();
-		}
-		else
+		} else
 		    timer.start();
 	    }
 	}
@@ -342,6 +357,13 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 			    10 + x, 0, 0));
 		}
 	    }
+	} else if (state == State.EXPAND) {
+	    if (circles.size() < 2) {
+		circles.add(new Circle(400 - rad, 400 - rad, rad, 0, 0));
+		
+	    } else
+		circles.remove(circles.get(0));
+	    rad+=1;
 	}
 	tick += 1;
 	if (tick > 255) {
