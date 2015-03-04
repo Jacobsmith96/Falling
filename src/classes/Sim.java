@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -15,8 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
@@ -34,7 +31,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
      */
     public BufferedImage myImage;
     /**
-     * Bufer for the graphics
+     * Buffer for the graphics
      */
     public Graphics2D myBuffer;
     /**
@@ -66,6 +63,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
     int col1 = 0;
     int col2 = 0;
     int col3 = 0;
+
     public enum State {
 	CLASSIC, SPRING, TUNNEL, WAIT
     }
@@ -112,24 +110,19 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	if (state == State.CLASSIC) {
 	    myBuffer.setColor(Color.BLACK);
 	    myBuffer.fillRect(0, 0, 800, 800);
-	    if(col1 == 0 && col2 == 0 && col3<255){
+	    if (col1 == 0 && col2 == 0 && col3 < 255) {
 		col3++;
-	    }
-	    else if (col1<255  && col2 == 0&&col3 ==255){
+	    } else if (col1 < 255 && col2 == 0 && col3 == 255) {
 		col1++;
-	    }
-	    else if(col1 == 255 && col2 <255 && col3 ==255){
-		col2 ++;
-	    }
-	    else if (col1 == 255 && col2 == 255 && col3>0){
+	    } else if (col1 == 255 && col2 < 255 && col3 == 255) {
+		col2++;
+	    } else if (col1 == 255 && col2 == 255 && col3 > 0) {
 		col3--;
-	    }
-	    else if (col1 == 255 && col2>0 && col3==0){
+	    } else if (col1 == 255 && col2 > 0 && col3 == 0) {
 		col2--;
-	    }
-	    else
+	    } else
 		col1--;
-	    myBuffer.setColor(new Color(col1, col2 , col3 ));
+	    myBuffer.setColor(new Color(col1, col2, col3));
 	    for (Circle i : circles) {
 		i.paintCircle(myBuffer);
 	    }
@@ -277,6 +270,15 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 		reset();
 	    }
 	}
+	if(keys.contains(KeyEvent.VK_SPACE)){
+	    if(state != State.WAIT){
+		if(timer.isRunning()){
+		    timer.stop();
+		}
+		else
+		    timer.start();
+	    }
+	}
 
     }
 
@@ -342,7 +344,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	    }
 	}
 	tick += 1;
-	if(tick>255){
+	if (tick > 255) {
 	    tick = 0;
 	}
 	paintObjects();
