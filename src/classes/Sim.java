@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,7 +26,7 @@ import javax.swing.WindowConstants;
 /**
  * @author Jacob_000 The Class handling the behavior of the simulator
  */
-public class Sim extends JFrame implements ActionListener, KeyListener {
+public class Sim extends JFrame implements ActionListener, KeyListener, MouseListener {
     /**
      * Buffered image used in graphics
      */
@@ -80,6 +81,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	state = State.WAIT;
 	timer = new Timer(20, this); // Creates a new timer
 	addKeyListener(this);// Sets up the key listeners
+	addMouseListener(this);
 	setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	setUndecorated(true);
 	JSlider grav = new JSlider(0, 10, 1);
@@ -371,5 +373,38 @@ public class Sim extends JFrame implements ActionListener, KeyListener {
 	}
 	paintObjects();
 	repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+	
+	
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+	if(state==State.CLASSIC){
+	    Point a = e.getLocationOnScreen();
+	    circles.add(new Circle(a.x-20,a.y-20,20,3,3));
+	}
+	
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+	// TODO Auto-generated method stub
+	
     }
 }
