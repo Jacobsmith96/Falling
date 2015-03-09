@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
@@ -26,7 +27,8 @@ import javax.swing.WindowConstants;
 /**
  * @author Jacob_000 The Class handling the behavior of the simulator
  */
-public class Sim extends JFrame implements ActionListener, KeyListener, MouseListener {
+public class Sim extends JFrame implements ActionListener, KeyListener,
+	MouseListener {
     /**
      * Buffered image used in graphics
      */
@@ -65,6 +67,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener, MouseLis
     int col2 = 50;
     int col3 = 50;
     int rad = 10;
+    Iterator b = circles.iterator();
 
     public enum State {
 	CLASSIC, SPRING, TUNNEL, EXPAND, WAIT
@@ -325,9 +328,9 @@ public class Sim extends JFrame implements ActionListener, KeyListener, MouseLis
 		circles.add(new Circle(randX, randY, randRad, randvX, randvY));
 	    }
 	    for (Circle a : circles) {
-		for (Circle b : circles) {
-		    if (a != b && a.collision(b)) {
-
+		for (int b = 0; b < circles.size(); b++) {
+		    if (a != circles.get(b) && a.collision(circles.get(b))) {
+			a.setRadius(a.getRadius() + circles.get(b).getRadius());
 		    }
 		}
 		a.update();
@@ -362,10 +365,10 @@ public class Sim extends JFrame implements ActionListener, KeyListener, MouseLis
 	} else if (state == State.EXPAND) {
 	    if (circles.size() < 2) {
 		circles.add(new Circle(400 - rad, 400 - rad, rad, 0, 0));
-		
+
 	    } else
 		circles.remove(circles.get(0));
-	    rad+=1;
+	    rad += 1;
 	}
 	tick += 1;
 	if (tick > 255) {
@@ -377,34 +380,33 @@ public class Sim extends JFrame implements ActionListener, KeyListener, MouseLis
 
     @Override
     public void mouseClicked(MouseEvent e) {
-	
-	
+
     }
 
     @Override
     public void mouseEntered(MouseEvent arg0) {
 	// TODO Auto-generated method stub
-	
+
     }
 
     @Override
     public void mouseExited(MouseEvent arg0) {
 	// TODO Auto-generated method stub
-	
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-	if(state==State.CLASSIC){
+	if (state == State.CLASSIC) {
 	    Point a = e.getLocationOnScreen();
-	    circles.add(new Circle(a.x-20,a.y-20,20,3,3));
+	    circles.add(new Circle(a.x - 20, a.y - 20, 20, 3, 3));
 	}
-	
+
     }
 
     @Override
     public void mouseReleased(MouseEvent arg0) {
 	// TODO Auto-generated method stub
-	
+
     }
 }
