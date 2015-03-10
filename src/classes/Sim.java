@@ -334,6 +334,7 @@ public class Sim extends JFrame implements ActionListener, KeyListener,
 		    }
 		}
 		a.update();
+		//
 	    }
 	} else if (state == State.SPRING) {
 	    if (circles.size() < 50) {
