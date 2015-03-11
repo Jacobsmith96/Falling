@@ -1,2 +1,2 @@
 # Falling
-Falling simulator
+Falling simulator written in Java
